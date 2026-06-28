@@ -1,18 +1,16 @@
 from utils import *
+import environment
 
 import psycopg2
 
-def connect(db, user, password, host, port):
+def connect(db=environment.POSTGRES_DB, user=environment.POSTGRES_USER, password=environment.POSTGRES_PASSWORD, host=environment.POSTGRES_HOST, port=environment.POSTGRES_PORT):
     host = dns_lookup(host) or host
     print(f"Attempting to connect to postgres at {host}:{port}")
     try:
-        database_connection = psycopg2.connect(dbname=db, user=user, password=password, host=host, port=port)
-        cursor = database_connection.cursor()
-        cursor.execute('SELECT version()')
-        postgres_version = cursor.fetchone()[0]
+        connection = psycopg2.connect(dbname=db, user=user, password=password, host=host, port=port)
+        cursor = connection.cursor()
 
         print("Connection successful!")
-        print(f"Postgres version: {postgres_version}")
-        return database_connection
+        return connection, cursor
     except psycopg2.OperationalError as exception:
         print(f"Connection attempt failed: {exception}.")
