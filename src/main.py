@@ -4,6 +4,8 @@ import database
 from flask import Flask
 
 postgres_version = database.execute("SELECT version()")
+postgres_version = postgres_version[0][0]
+postgres_version = postgres_version.split(" ")[1]
 
 database.initialize()
 
