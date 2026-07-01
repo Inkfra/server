@@ -3,8 +3,6 @@ from utils import *
 import database
 from flask import Flask
 
-log.debug(database.execute("SELECT version()"))
-
 database.initialize()
 
 app = Flask(__name__)
