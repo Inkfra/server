@@ -3,13 +3,15 @@ from utils import *
 import database
 from flask import Flask
 
+postgres_version = database.execute("SELECT version()")
+
 database.initialize()
 
 app = Flask(__name__)
 
 @app.route('/api/v1/health', methods=['GET'])
 def health_check():
-    return "Service is running!"
+    return {"status": "Service is running!", "postgres_version": postgres_version}, 200
 
 @app.route('/api/v1/devices/get', methods=['GET'])
 def get_devices():
